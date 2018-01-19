@@ -4,6 +4,7 @@ import _thread
 from array import array
 from math import ceil
 from struct import unpack
+import numpy as np
 
 def TCP(conn, addr):
     """
@@ -23,7 +24,10 @@ def TCP(conn, addr):
     * sudo python3 -m modbus.server
 """
     buffer = array('B', [0] * 300)
+    cnt = 0
     while True:
+        if cnt < 60000: cnt = cnt + 1
+        else: cnt = 1
         try:
             conn.recv_into(buffer)
             TID0 = buffer[0]   #Transaction ID  to sync
@@ -45,14 +49,7 @@ def TCP(conn, addr):
                         DAT.append(v)
                         v = (lambda x: x + 1 if (x < 255) else 85)(v)
                 else:
-                    for i in range(LEN):  # Sends back the address as data
-                        DAT.append(mADR)
-                        DAT.append(lADR)
-                        if (lADR == 255):
-                            lADR = 0
-                            mADR = mADR + 1
-                        else:
-                            lADR = lADR + 1
+                    DAT = array('B', np.arange(cnt, LEN+cnt, dtype=np.dtype('>i2')).tobytes())
                 print("TID = %d, ID= %d, Fun.Code= %d, Address= %d, Length= %d" \
                       %((TID0 * 256 + TID1), ID, FC, ADR, LEN))
                 conn.send(
