@@ -9,7 +9,7 @@
 
 ### Server:
 * sudo python3 -m modbus.server ...to run server
-* For Register Reads, the server sends back the address as values. 
+* For Register Reads, the server sends back values incrementing upto 6000. 
 * For example, the client wants to read with FuncCode=3, Address=100, and Length=4 
 * Then the server's reply for values will be 100,101,102,103
 * For Coil Reads, the server sends back values 85,86... for the required length.
