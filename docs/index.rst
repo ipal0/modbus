@@ -6,11 +6,6 @@
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   Modbus Server and Client programs using Python-3
-   Installation
-   Usage Examples
-   Server
-   Client
 
 Modbus Server and Client programs using Python-3
 ------------------------------------------------
@@ -18,15 +13,15 @@ Modbus Server and Client programs using Python-3
 -  server.py
 -  client.py
 
-Installation:
+Installation
 -------------
 
 -  sudo pip3 install modbus
 
-Usage Examples:
+Usage Examples
 ---------------
 
-Server:
+Server
 ~~~~~~~
 
 -  sudo python3 -m modbus.server …to run server in commandline
@@ -38,7 +33,7 @@ Server:
 -  For Coil Reads, the server sends back values 85,86… for the required
    length.
 
-Client:
+Client
 ~~~~~~~
 
 -  python3 -m modbus.client …to run client in commandline #### To run
