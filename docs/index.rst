@@ -6,6 +6,11 @@
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   Modbus Server and Client programs using Python-3
+   Installation
+   Usage Examples
+   Server
+   Client
 
 Modbus Server and Client programs using Python-3
 ------------------------------------------------
