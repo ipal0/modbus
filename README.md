@@ -14,7 +14,7 @@
 
 ### Client:
 * python3 -m modbus.client ...to run client in commandline
-#### To run the client in another program or interpreter.
+#### To run the client within another program or interpreter.
 * from modbus.client import client
 * c = client(host='localhost') ...Change localhost to your IP address
 * r = c.read(FC=3, ADD=0, LEN=8)
