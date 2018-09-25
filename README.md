@@ -16,7 +16,7 @@
 * python3 -m modbus.client ...to run client in commandline
 #### To run the client within another program or interpreter.
 * from modbus.client import client
-* c = client(host='localhost') ...Change the localhost to your IP address
+* c = client(host='localhost') ...Change localhost to your IP address
 * r = c.read(FC=3, ADD=0, LEN=8)
 * print("Received Data =", r)  
 * c.write(FC=16, ADD=0, DAT=[11,22,333,4444]) ...DAT should be a list of values
