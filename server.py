@@ -50,8 +50,7 @@ def TCP(conn, addr):
                         v = (lambda x: x + 1 if (x < 255) else 85)(v)
                 else:
                     DAT = array('B', np.arange(cnt, LEN+cnt, dtype=np.dtype('>i2')).tobytes())
-                print("TID = %d, ID= %d, Fun.Code= %d, Address= %d, Length= %d" \
-                      %((TID0 * 256 + TID1), ID, FC, ADR, LEN))
+                print(f"TID = {(TID0 * 256 + TID1)}, ID= {ID}, Fun.Code= {FC}, Address= {ADR}, Length= {LEN}, Data= {DAT}")
                 conn.send(
                     array('B', [TID0, TID1, 0, 0, 0, BYT + 3, ID, FC, BYT]) + DAT)
             elif (FC in [5, 6, 15, 16]):  # Write Registers
@@ -59,8 +58,7 @@ def TCP(conn, addr):
                 conn.send(
                     array('B', [TID0, TID1, 0, 0, 0, 6, ID, FC, mADR, lADR, buffer[10], buffer[11]]))
                 buf = buffer[13:(13 + BYT)]
-                print("TID = %d, ID= %d, Fun.Code= %d, Address= %d, Length= %d, Bytes= %d" \
-                          %((TID0 * 256 + TID1), ID, FC, ADR, LEN, BYT))
+                print(f"TID = {(TID0 * 256 + TID1)}, ID= {ID}, Fun.Code= {FC}, Address= {ADR}, Length= {LEN}, Bytes= {BYT}")
                 if FC == 5 or FC == 15:
                     message = 'bytes: '+ str(unpack('B' * BYT, buf))
                 elif FC == 6 or FC == 16:
