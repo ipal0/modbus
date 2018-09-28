@@ -33,16 +33,15 @@ def TCP(conn, addr):
             TID0 = buffer[0]   #Transaction ID  to sync
             TID1 = buffer[1]   #Transaction ID 
             ID = buffer[6]     #Unit ID
-            FC = buffer[7]
-            mADR = buffer[8]
-            lADR = buffer[9]
-            ADR = mADR * 256 + lADR
-            if FC in [5,6]: 
-                LEN = 1
-            else:
+            FC = buffer[7]     #Function Code
+            mADR = buffer[8]   #Address MSB
+            lADR = buffer[9]   #Address LSB
+            ADR = mADR * 256 + lADR 
+            LEN = 1
+            if FC not in [5,6]: 
                 LEN = buffer[10] * 256 + buffer[11]
             BYT = LEN * 2
-            print("Received = ", buffer[0:12 + buffer[12]])
+            print("Received = ", buffer[0:12+buffer[12]])
             if (FC in [1, 2, 3, 4]):  # Read Inputs or Registers
                 DAT = array('B')
                 if FC < 3:
@@ -64,8 +63,8 @@ def TCP(conn, addr):
                     buf = buffer[10:12]
                 else:
                     BYT = buffer[12]
-                    buf = buffer[13:(13 + BYT)]
-                print(f"TID = {(TID0 * 256 + TID1)}, ID= {ID}, Fun.Code= {FC}, Address= {ADR}, Length= {LEN}, Bytes= {BYT}, Data={buf}")
+                    buf = buffer[13:13+BYT]
+                print(f"TID = {(TID0 * 256 + TID1)}, ID= {ID}, Fun.Code= {FC}, Address= {ADR}, Length= {LEN}, Bytes= {BYT}")
                 if FC == 5 or FC == 15:
                     message = 'bytes: '+ str(unpack('B' * BYT, buf))
                 elif FC == 6 or FC == 16:
