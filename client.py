@@ -26,6 +26,7 @@ class client:
         self.unit = unit
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, 502))
+        self.TID = 0
 
     def read(self, FC, ADD, LEN):
         lADD = ADD & 0x00FF
@@ -36,7 +37,10 @@ class client:
             BYT = ceil(LEN / 8)  # Round off the no. of bytes
         else:
             BYT = LEN * 2
-        cmd = array('B', [0, randint(0, 255), 0, 0, 0, 6,
+        if self.TID < 255: 
+            self.TID = self.TID + 1
+        else: self.TID = 1
+        cmd = array('B', [0, self.TID, 0, 0, 0, 6,
                           self.unit, FC, mADD, lADD, mLEN, lLEN])
         self.sock.send(cmd)
         buf = array('B', [0] * (BYT + 9))
@@ -61,10 +65,13 @@ class client:
             LEN = int(len(VAL) / 2)
         lLEN = LEN & 0x00FF
         mLEN = LEN >> 8
+        if self.TID < 255: 
+            self.TID = self.TID + 1
+        else: self.TID = 1
         if FC == 6:
-            cmd = array('B', [0, 0, 0, 0, 0, 6, self.unit, FC, mADD, lADD])
+            cmd = array('B', [0, self.TID, 0, 0, 0, 6, self.unit, FC, mADD, lADD])
         else:
-            cmd = array('B', [0, 0, 0, 0, 0, 7 + len(VAL), self.unit, FC, mADD, lADD, mLEN, lLEN, len(VAL)])
+            cmd = array('B', [0, self.TID, 0, 0, 0, 7 + len(VAL), self.unit, FC, mADD, lADD, mLEN, lLEN, len(VAL)])
         cmd.extend(VAL)
         buffer = array('B', [0] * 20)
         print("Sent", cmd)
@@ -84,10 +91,10 @@ if __name__ == "__main__":
         S = input("Enter: FunctionCode, Address, Length of Registers to Read or Value of Registers to Write\n")
         L = S.strip().split(',')
         try:
-            FC = int(L[0])
+            FC, ADD = int(L[0]), int(L[1])
             if FC in [1,2,3,4]:
-                print("Received =", c.read(int(L[0]), int(L[1]), int(L[2])))
+                print("Received =", c.read(FC, ADD, int(L[2])))
             elif FC in [5,6,15,16]:
-                c.write(int(L[0]), int(L[1]), L[2:])
+                c.write(FC, ADD, L[2:])
         except Exception:
             Help()
