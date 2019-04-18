@@ -60,7 +60,7 @@ class client:
 		if FC == 5 or FC == 15:
 			LEN = len(VAL) * 8
 		else:
-			LEN = len(VAL) / 2
+			LEN = len(VAL) // 2
 		lLEN = LEN & 0x00FF
 		mLEN = LEN >> 8
 		if self.TID < 255: 
