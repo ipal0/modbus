@@ -52,7 +52,7 @@ def TCP(conn, addr):
                         v = (lambda x: x + 1 if (x < 255) else 85)(v)
                 else:
                     DAT = array('B', np.arange(cnt, LEN+cnt, dtype=np.dtype('>i2')).tobytes())
-                print(f"TID = {(TID0 * 256 + TID1)}, ID= {ID}, Fun.Code= {FC}, Address= {ADR}, Length= {LEN}, Data= {DAT}")
+                print(f"TID = {(TID0 * 256 + TID1)}, ID= {ID}, Fun.Code= {FC}, Address= {ADR}, Length= {LEN}, Data= {DAT}\n--------")
                 conn.send(
                     array('B', [TID0, TID1, 0, 0, 0, BYT + 3, ID, FC, BYT]) + DAT)
             elif (FC in [5, 6, 15, 16]):  # Write Registers
@@ -69,9 +69,9 @@ def TCP(conn, addr):
                     message = 'bytes: '+ str(unpack('B' * BYT, buf))
                 elif FC == 6 or FC == 16:
                     message = str(unpack('>' + 'H' * int(BYT / 2), buf))
-                print("Received Write Values =", message)
+                print(f"Received Write Values = {message}\n--------")
             else:
-                print("Funtion Code %d Not Supported" % FC)
+                print(f"Funtion Code {FC} Not Supported")
                 exit()
         except Exception as e:
             print(e, "\nConnection with Client terminated")

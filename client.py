@@ -58,7 +58,7 @@ class client:
 		mADR = ADR >> 8
 		VAL = b''
 		for i in DAT:
-			VAL = VAL + pack('>H', int(i))
+			VAL = VAL + pack('>H', i)
 		if FC == 5 or FC == 6:
 			VAL = VAL[0:2]			 
 		if FC == 5 or FC == 15:
@@ -80,23 +80,3 @@ class client:
 		self.sock.send(cmd)
 		self.sock.recv_into(buffer)
 		#print('Received', buffer[:12])
-
-if __name__ == "__main__":
-	parser = ArgumentParser(description="Modbus Client Program")
-	parser.add_argument('-i', dest='host', type=str,
-						help="Host Name or IP Address [Default=localhost]", default="localhost")
-	parser.add_argument('-u', dest='unit', type=int,
-						help="Unit Number [Default=1]", default=1)
-	args = parser.parse_args()
-	c = client(args.host, args.unit)
-	while True:
-		S = input("Enter: FunctionCode, Address, Length of Registers to Read or Value of Registers to Write\n")
-		L = S.strip().split(',')
-		try:
-			FC, ADR = int(L[0]), int(L[1])
-			if FC in [1,2,3,4]:
-				print("Received =", c.read(FC, ADR, int(L[2])))
-			elif FC in [5,6,15,16]:
-				c.write(FC, ADR, L[2:])
-		except Exception:
-			self.fc()
