@@ -29,9 +29,9 @@ class client:
 		15 = Write Coils or Digital Outputs\n\
 		16 = Write Holding Registers")
 
-	def read(self, FC, ADD, LEN):
-		lADD = ADD & 0x00FF
-		mADD = ADD >> 8
+	def read(self, FC=3, ADR=0, LEN=10):
+		lADR = ADR & 0x00FF
+		mADR = ADR >> 8
 		lLEN = LEN & 0x00FF
 		mLEN = LEN >> 8
 		if (FC < 3):
@@ -42,7 +42,7 @@ class client:
 			self.TID = self.TID + 1
 		else: self.TID = 1
 		cmd = array('B', [0, self.TID, 0, 0, 0, 6,
-						  self.unit, FC, mADD, lADD, mLEN, lLEN])
+						  self.unit, FC, mADR, lADR, mLEN, lLEN])
 		self.sock.send(cmd)
 		buf = array('B', [0] * (BYT + 9))
 		self.sock.recv_into(buf)
@@ -52,10 +52,10 @@ class client:
 		else:
 			return unpack('B' * BYT, buf[9:(9 + BYT)])
 
-	def write(self, FC, ADD, DAT):
+	def write(self, *DAT, FC=16, ADR=0):
 		if FC < 5: return(self.fc())
-		lADD = ADD & 0x00FF
-		mADD = ADD >> 8
+		lADR = ADR & 0x00FF
+		mADR = ADR >> 8
 		VAL = b''
 		for i in DAT:
 			VAL = VAL + pack('>H', int(i))
@@ -71,9 +71,9 @@ class client:
 			self.TID = self.TID + 1
 		else: self.TID = 1
 		if FC == 6:
-			cmd = array('B', [0, self.TID, 0, 0, 0, 6, self.unit, FC, mADD, lADD])
+			cmd = array('B', [0, self.TID, 0, 0, 0, 6, self.unit, FC, mADR, lADR])
 		else:
-			cmd = array('B', [0, self.TID, 0, 0, 0, 7 + len(VAL), self.unit, FC, mADD, lADD, mLEN, lLEN, len(VAL)])
+			cmd = array('B', [0, self.TID, 0, 0, 0, 7 + len(VAL), self.unit, FC, mADR, lADR, mLEN, lLEN, len(VAL)])
 		cmd.extend(VAL)
 		buffer = array('B', [0] * 20)
 		print("Sent", cmd)
@@ -93,10 +93,10 @@ if __name__ == "__main__":
 		S = input("Enter: FunctionCode, Address, Length of Registers to Read or Value of Registers to Write\n")
 		L = S.strip().split(',')
 		try:
-			FC, ADD = int(L[0]), int(L[1])
+			FC, ADR = int(L[0]), int(L[1])
 			if FC in [1,2,3,4]:
-				print("Received =", c.read(FC, ADD, int(L[2])))
+				print("Received =", c.read(FC, ADR, int(L[2])))
 			elif FC in [5,6,15,16]:
-				c.write(FC, ADD, L[2:])
+				c.write(FC, ADR, L[2:])
 		except Exception:
 			self.fc()
