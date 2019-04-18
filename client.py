@@ -1,11 +1,8 @@
 #!/usr/bin/python3
 import socket
-from sys import argv
 from array import array
 from struct import unpack, pack
 from math import ceil
-from argparse import ArgumentParser
-from random import randint
 
 __all__ = ["client"]
 
@@ -46,7 +43,6 @@ class client:
 		self.sock.send(cmd)
 		buf = array('B', [0] * (BYT + 9))
 		self.sock.recv_into(buf)
-		#print(('Received', buf))
 		if (FC > 2):
 			return unpack('>' + 'H' * LEN, buf[9:(9 + BYT)])
 		else:
@@ -64,7 +60,7 @@ class client:
 		if FC == 5 or FC == 15:
 			LEN = len(VAL) * 8
 		else:
-			LEN = int(len(VAL) / 2)
+			LEN = len(VAL) / 2
 		lLEN = LEN & 0x00FF
 		mLEN = LEN >> 8
 		if self.TID < 255: 
@@ -79,4 +75,3 @@ class client:
 		print("Sent", cmd)
 		self.sock.send(cmd)
 		self.sock.recv_into(buffer)
-		#print('Received', buffer[:12])
