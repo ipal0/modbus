@@ -13,7 +13,7 @@
 * For Coil Reads, the server sends back values 85,86... for the required length.
 
 ### Client:
-* from modbus.client import client
+* from modbus.client import *
 * c = client() ...if host = 'localhost'
 * c = client(host='HOSTNAME') ...Change HOSTNAME to Server IP address
 * c.read() ...To read 10 Holding Registers from Address 0
@@ -21,6 +21,7 @@
 * c.write(11,22,333,4444) ...To write Holding Registers from Address 0
 * c.write(11,22,333,4444, ADR=10) ...To write Holding Registers from Address 10
 * c.write(11,22, FC=15, ADR=10) ...To write Coils from Address 10
+* fc() ...To get the supported Function Codes
 
 ### Supported Function Codes:
 * 1 = Read Coils or Digital Outputs\n\
