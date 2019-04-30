@@ -16,8 +16,8 @@
 * from modbus.client import *
 * c = client() ...if host = 'localhost'
 * c = client(host='HOSTNAME') ...Change HOSTNAME to Server IP address
-* c.read() ...To read 10 Holding Registers from Address 0
-* c.read(FC=4, ADR=10, LEN=8) ...To read 8 Input Registers from Address 10
+* c.read() ...To read 10 Input Registers from Address 0
+* c.read(FC=3, ADR=10, LEN=8) ...To read 8 Holding Registers from Address 10
 * c.write(11,22,333,4444) ...To write Holding Registers from Address 0
 * c.write(11,22,333,4444, ADR=10) ...To write Holding Registers from Address 10
 * c.write(11,22, FC=15, ADR=10) ...To write Coils from Address 10

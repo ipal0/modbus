@@ -25,7 +25,7 @@ class client:
 		self.sock.connect((host, 502))
 		self.TID = 0
 
-	def read(self, FC=3, ADR=0, LEN=10):
+	def read(self, FC=4, ADR=0, LEN=10): #Default Read: Input Registers
 		if FC not in [1,2,3,4]: return(fc())
 		lADR = ADR & 0x00FF
 		mADR = ADR >> 8
@@ -48,7 +48,7 @@ class client:
 		else:
 			return unpack('B' * BYT, buf[9:(9 + BYT)])
 
-	def write(self, *DAT, FC=16, ADR=0):
+	def write(self, *DAT, FC=16, ADR=0): #Default Write: Holding Registers
 		if FC not in [5,6,15,16]: return(fc())
 		lADR = ADR & 0x00FF
 		mADR = ADR >> 8
