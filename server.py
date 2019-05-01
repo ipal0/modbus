@@ -41,7 +41,7 @@ def TCP(conn, addr):
             if FC not in [5,6]: 
                 LEN = buffer[10] * 256 + buffer[11]
             BYT = LEN * 2
-            print("Received = ", buffer[0:12+buffer[12]])
+            print("Received = ", buffer[:13+buffer[12]])
             if (FC in [1, 2, 3, 4]):  # Read Inputs or Registers
                 DAT = array('B')
                 if FC < 3:
